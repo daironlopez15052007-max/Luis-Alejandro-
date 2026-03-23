@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechCubana | Expertos en Tecnología Móvil</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --primary-tech: #38bdf8;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --success: #4ade80;
+            --accent: #6366f1;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+
+        /* --- NAVBAR RESPONSIVE --- */
+        header { 
+            background: rgba(15, 23, 42, 0.95); 
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%; 
+            position: fixed; 
+            top: 0; width: 100%; 
+            z-index: 1000; 
+            border-bottom: 1px solid rgba(56, 189, 248, 0.1);
+            display: flex; justify-content: space-between; align-items: center; 
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--primary-tech); text-decoration: none; }
+        .logo span { color: white; font-weight: 300; }
+        
+        nav a { color: var(--text-main); text-decoration: none; margin-left: 2rem; font-weight: 500; font-size: 0.9rem; transition: 0.3s; }
+        nav a:hover { color: var(--primary-tech); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 160px 5% 80px;
+            text-align: center;
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent),
+                        radial-gradient(circle at bottom left, rgba(56, 189, 248, 0.15), transparent);
+        }
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+        .hero h1 span { background: linear-gradient(90deg, var(--primary-tech), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { max-width: 600px; margin: 0 auto 2rem; color: var(--text-muted); font-size: 1.2rem; }
+
+        /* --- SECCIÓN QUÉ OFRECEMOS --- */
+        .services { padding: 60px 5%; background: rgba(30, 41, 59, 0.5); text-align: center; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .service-item { padding: 2rem; background: var(--bg-card); border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        .service-item i { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
+        .service-item h3 { margin-bottom: 0.8rem; color: var(--primary-tech); }
+
+        /* --- CATÁLOGO --- */
+        .catalog { padding: 80px 5%; }
+        .section-title { text-align: center; margin-bottom: 4rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2.5rem; }
+
+        .product-card { 
+            background: var(--bg-card); border-radius: 24px; overflow: hidden; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; border: 1px solid rgba(255,255,255,0.03); 
+        }
+        .product-card:hover { border-color: var(--primary-tech); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        
+        .img-container { background: white; height: 240px; display: flex; align-items: center; justify-content: center; padding: 1.5rem; position: relative; }
+        .product-img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        
+        .info { padding: 1.5rem; }
+        .price { color: var(--primary-tech); font-size: 1.5rem; font-weight: 800; }
+
+        /* --- FOOTER --- */
+        footer { background: #070b14; padding: 80px 5% 40px; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 4rem; margin-bottom: 40px; }
+        .footer-section h4 { color: white; margin-bottom: 1.5rem; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; }
+        .footer-section p, .footer-section a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; display: block; margin-bottom: 0.8rem; }
+        .copyright { text-align: center; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); color: var(--text-muted); font-size: 0.8rem; }
+
+        /* --- MODAL --- */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.98); z-index: 2000; overflow-y: auto; padding: 20px; }
+        .modal-content { max-width: 1100px; margin: 40px auto; background: var(--bg-card); border-radius: 30px; display: grid; grid-template-columns: 1.2fr 1fr; overflow: hidden; position: relative; }
+        @media (max-width: 850px) { .modal-content { grid-template-columns: 1fr; } }
+        
+        .close { position: fixed; top: 20px; right: 30px; font-size: 3rem; cursor: pointer; color: white; z-index: 2100; }
+        .btn-wa { background: var(--success); color: #070b14; text-align: center; padding: 1.2rem; display: block; text-decoration: none; font-weight: 800; border-radius: 16px; margin-top: 2rem; transition: 0.3s; }
+        
+        /* Mobile adjustment */
+        @media (max-width: 600px) {
+            nav { display: none; } /* En una versión pro aquí iría un menú hamburguesa */
+            .hero h1 { font-size: 2.2rem; }
+            .logo {margin: 0, auto}
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="#" class="logo">Tech<span>Cubana</span></a>
+    <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#servicios">Servicios</a>
+        <a href="#catalogo">Catálogo</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+</header>
+
+<section class="hero" id="inicio">
+    <h1>Tu próximo smartphone <br><span>está aquí.</span></h1>
+    <p>Dispositivos nuevos y sellados con garantía técnica oficial. Envíos rápidos a toda La Habana.</p>
+</section>
+
+<section class="services" id="servicios">
+    <div class="section-title">
+        <h2 style="font-size: 2rem;">¿Por qué elegir <span>TechCubana</span>?</h2>
+    </div>
+    <div class="services-grid">
+        <div class="service-item">
+            <i>🛡️</i>
+            <h3>Garantía Real</h3>
+            <p>Todos nuestros equipos cuentan con 3 meses de garantía técnica por defectos de fábrica.</p>
+        </div>
+        <div class="service-item">
+            <i>🚚</i>
+            <h3>Entrega a Domicilio</h3>
+            <p>Recibe tu equipo en la puerta de tu casa en menos de 24 horas dentro de la capital.</p>
+        </div>
+        <div class="service-item">
+            <i>✨</i>
+            <h3>Equipos Sellados</h3>
+            <p>Solo trabajamos con mercancía nueva y original en su caja de fábrica.</p>
+        </div>
+    </div>
+</section>
+
+<main class="catalog" id="catalogo">
+    <div class="section-title">
+        <h2 style="font-size: 2.5rem;">Explora nuestro <span>Catálogo</span></h2>
+        <p style="color: var(--text-muted)">Precios actualizados diariamente</p>
+    </div>
+    <div class="grid" id="grid-productos"></div>
+</main>
+
+<footer id="contacto">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4 style="color: var(--primary-tech)">TechCubana</h4>
+            <p>Líderes en importación de dispositivos móviles de última generación en Cuba.</p>
+        </div>
+        <div class="footer-section">
+            <h4>Navegación</h4>
+            <a href="#inicio">Inicio</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#catalogo">Catálogo</a>
+        </div>
+        <div class="footer-section">
+            <h4>Soporte</h4>
+            <p>📞 +53 5000 0000</p>
+            <p>📍 Santiago de Cuba, Cuba</p>
+            <p>⏰ Lunes - Sábado: 9am - 6pm</p>
+        </div>
+    </div>
+    <div class="copyright">
+        &copy; 2024 TechCubana Inc. Todos los derechos reservados. | Diseñado para el éxito.
+    </div>
+</footer>
+
+<div id="productModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <div class="modal-content" id="modal-dinamico"></div>
+</div>
+
+<script>
+    // INVENTARIO COMPLETO
+    const productos = [
+        { id: 1, marca: "Apple", modelo: "iPhone 15 Pro Max", precio: "$1199 USD", img: "https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-15-pro-max.jpg", specs: ["Titanio Grado 5", "Chip A17 Pro", "Zoom Óptico 5x"], desc: "El tope de gama definitivo con el mejor rendimiento en juegos y fotografía." },
+        { id: 2, marca: "Samsung", modelo: "Galaxy S24 Ultra", precio: "$1050 USD", img: "https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-s24-ultra.jpg", specs: ["Galaxy AI", "Pantalla 2600 nits", "S-Pen Integrado"], desc: "Potencia sin límites con funciones de Inteligencia Artificial exclusivas." },
+        { id: 3, marca: "Xiaomi", modelo: "Redmi Note 13 Pro+", precio: "$390 USD", img: "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-redmi-note-13-pro-plus.jpg", specs: ["Cámara 200MP", "Carga 120W", "Resistencia IP68"], desc: "Carga tu teléfono al 100% en menos de 20 minutos." },
+        { id: 4, marca: "Google", modelo: "Pixel 8 Pro", precio: "$799 USD", img: "https://fdn2.gsmarena.com/vv/bigpic/google-pixel-8-pro.jpg", specs: ["Mejor Cámara IA", "7 años de Updates", "Pantalla Actua"], desc: "La fotografía computacional más avanzada del mercado." },
+        { id: 5, marca: "Apple", modelo: "iPhone 13", precio: "$550 USD", img: "https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-13.jpg", specs: ["Chip A15 Bionic", "Modo Cine", "Batería Durable"], desc: "Potente, elegante y con una cámara que sigue siendo de las mejores." },
+        { id: 6, marca: "Xiaomi", modelo: "Poco F6 Pro", precio: "$480 USD", img: "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-poco-f6-pro.jpg", specs: ["Snapdragon 8 Gen 2", "Pantalla WQHD+", "Carga 120W"], desc: "Diseñado para el máximo rendimiento en tareas pesadas y juegos." },
+        { id: 7, marca: "Samsung", modelo: "Galaxy A55 5G", precio: "$360 USD", img: "https://fdn2.gsmarena.com/vv/bigpic/samsung-galaxy-a55.jpg", specs: ["Cuerpo Metálico", "Resistente al agua", "Cámara Nightography"], desc: "La mejor relación calidad-precio con un diseño de cristal y metal." },
+        { id: 8, marca: "Motorola", modelo: "Edge 50 Pro", precio: "$520 USD", img: "https://fdn2.gsmarena.com/vv/bigpic/motorola-edge-50-pro.jpg", specs: ["Carga 125W", "Pantalla 144Hz", "Diseño Cuero Vegano"], desc: "Un teléfono que destaca por su carga ultra rápida y diseño ergonómico." },
+        { id: 9, marca: "Apple", modelo: "iPhone 14 Plus", precio: "$699 USD", img: "https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-14-plus.jpg", specs: ["Pantalla 6.7\"", "Súper Batería", "Detección de Choques"], desc: "Todo el tamaño Pro con una batería que dura hasta dos días." }
+    ];
+
+    function cargarTienda() {
+        const contenedor = document.getElementById('grid-productos');
+        productos.forEach(p => {
+            contenedor.innerHTML += `
+                <div class="product-card" onclick="verDetalle(${p.id})">
+                    <div class="img-container"><img src="${p.img}" class="product-img" onerror="this.src='https://via.placeholder.com/200?text=Phone'"></div>
+                    <div class="info">
+                        <small style="color:var(--primary-tech); font-weight:bold; text-transform:uppercase; font-size:0.7rem;">${p.marca}</small>
+                        <h3 style="margin:5px 0 10px 0; font-size:1.1rem; color:white;">${p.modelo}</h3>
+                        <p class="price">${p.precio}</p>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function verDetalle(id) {
+        const p = productos.find(item => item.id === id);
+        const modalContenido = document.getElementById('modal-dinamico');
+        
+        modalContenido.innerHTML = `
+            <div style="background:white; display:flex; align-items:center; justify-content:center; padding:3rem;">
+                <img src="${p.img}" style="max-width:100%; max-height:450px; object-fit:contain;">
+            </div>
+            <div style="padding:3rem; display:flex; flex-direction:column; justify-content:center;">
+                <span style="color:var(--primary-tech); font-weight:800; text-transform:uppercase; letter-spacing:2px; font-size:0.8rem;">${p.marca}</span>
+                <h2 style="font-size:2.8rem; margin:0.5rem 0; line-height:1; font-weight:800;">${p.modelo}</h2>
+                <p style="color:var(--text-muted); font-size:1.1rem; margin:1.5rem 0;">${p.desc}</p>
+                
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:1.5rem; border-radius:20px; margin-bottom:1.5rem;">
+                    <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:var(--primary-tech); letter-spacing:1px;">FICHA TÉCNICA</h4>
+                    <ul style="margin:0; padding-left:18px; font-size:1rem; color:var(--text-main);">
+                        ${p.specs.map(s => `<li style="margin-bottom:5px;">${s}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div style="display:flex; align-items:baseline; gap:10px;">
+                    <span style="color:var(--text-muted); font-size:1rem;">Precio:</span>
+                    <span class="price" style="font-size:2.5rem;">${p.precio}</span>
+                </div>
+                
+                <a href="https://wa.me/5350000000?text=Hola TechCubana! Me gustaría adquirir el ${p.modelo}. ¿Tienen stock disponible?" class="btn-wa">
+                    ADQUIRIR POR WHATSAPP 📲
+                </a>
+            </div>
+        `;
+        
+        document.getElementById('productModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('productModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('productModal')) closeModal();
+    }
+
+    cargarTienda();
+</script>
+
+</body>
+</html>
